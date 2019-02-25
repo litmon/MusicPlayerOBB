@@ -1,7 +1,6 @@
 package com.litmon.app.musicplayer
 
 import android.content.Context
-import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.storage.OnObbStateChangeListener
@@ -14,7 +13,7 @@ import java.io.FileInputStream
 
 class MainActivity : AppCompatActivity() {
 
-    val storageManager by lazy {
+    private val storageManager by lazy {
         getSystemService(Context.STORAGE_SERVICE) as StorageManager
     }
 
@@ -39,12 +38,17 @@ class MainActivity : AppCompatActivity() {
                 // use function can close file input stream automatically
                 FileInputStream(musicFile).use { inputStream ->
                     val mediaPlayer = MediaPlayer().apply {
+                        // setDataSource(musicFile.absolutePath)
+                        // file pathからいくとクラッシュする(Caused by: java.io.IOException: Prepare failed.: status=0x1)
+                        // のでfile descriptorを使う
                         setDataSource(inputStream.fd)
-                        setAudioAttributes(
-                            AudioAttributes.Builder()
-                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                                .build()
-                        )
+
+                        // ↓これなくても動くっぽい
+//                        setAudioAttributes(
+//                            AudioAttributes.Builder()
+//                                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+//                                .build()
+//                        )
                     }
                     mediaPlayer.prepare()
                     mediaPlayer.start()
