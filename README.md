@@ -1,6 +1,7 @@
 # Music Playing from OBB file
 
-OBBファイルを使った音楽再生テスト
+OBBファイル(Expansion Files)を使った音楽再生テスト
+https://developer.android.com/google/play/expansion-files
 
 ## Prepare
 
